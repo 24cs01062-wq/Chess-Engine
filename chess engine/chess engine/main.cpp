@@ -8,6 +8,327 @@
 #include <iostream>
 #include<vector>
 using namespace std;
+class queen{
+private:
+    vector<pair<int,int>>mov;
+    vector<vector<string>>arr;
+public:
+
+    queen(vector<vector<string>>&arr){
+        this->arr=arr;
+    }
+
+    vector<pair<int,int>> moveset(int r,int c){
+        for(int i=r+1;i<8;i++){
+            if(arr[i][c]=="# "){
+                mov.push_back({i,c});
+            }
+            else if(arr[i][c][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({i,c});
+                break;
+            }
+        }
+        for(int i=r-1;i>=0;i--){
+            if(arr[i][c]=="# "){
+                mov.push_back({i,c});
+            }
+            else if(arr[i][c][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({i,c});
+                break;
+            }
+        }
+        for(int i=c+1;i<8;i++){
+            if(arr[r][i]=="# "){
+                mov.push_back({r,i});
+            }
+            else if(arr[r][i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r,i});
+                break;
+            }
+        }
+        for(int i=c-1;i>=0;i--){
+            if(arr[r][i]=="# "){
+                mov.push_back({r,i});
+            }
+            else if(arr[r][i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r,i});
+                break;
+            }
+        }
+        for(int i=1;i<8-max(r,c);i++){
+            if(arr[r+i][c+i]=="#"){
+                mov.push_back({r+i,c+i});
+            }
+            else if(arr[r+i][c+i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r+i,c+i});
+                break;
+            }
+        }
+        for(int i=1;i<min(r,c);i++){
+            if(arr[r-i][c-i]=="#"){
+                mov.push_back({r-i,c-i});
+            }
+            else if(arr[r-i][c-i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r-i,c-i});
+                break;
+            }
+        }
+        for(int i=1;i<min(8-r,c);i++){
+            if(arr[r+i][c-i]=="#"){
+                mov.push_back({r+i,c-i});
+            }
+            else if(arr[r+i][c-i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r+i,c-i});
+                break;
+            }
+        }
+        for(int i=1;i<min(r,8-c);i++){
+            if(arr[r-i][c+i]=="#"){
+                mov.push_back({r-i,c+i});
+            }
+            else if(arr[r-i][c+i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r-i,c+i});
+                break;
+            }
+        }
+        return mov;
+    }
+    
+};
+class bishop{
+private:
+    vector<pair<int,int>>mov;
+    vector<vector<string>>arr;
+public:
+    
+    bishop(vector<vector<string>>&arr){
+        this->arr=arr;
+    }
+  
+    vector<pair<int,int>> moveset(int r,int c){
+        for(int i=1;i<8-max(r,c);i++){
+            if(arr[r+i][c+i]=="#"){
+                mov.push_back({r+i,c+i});
+            }
+            else if(arr[r+i][c+i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r+i,c+i});
+                break;
+            }
+        }
+        for(int i=1;i<min(r,c);i++){
+            if(arr[r-i][c-i]=="#"){
+                mov.push_back({r-i,c-i});
+            }
+            else if(arr[r-i][c-i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r-i,c-i});
+                break;
+            }
+        }
+        for(int i=1;i<min(8-r,c);i++){
+            if(arr[r+i][c-i]=="#"){
+                mov.push_back({r+i,c-i});
+            }
+            else if(arr[r+i][c-i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r+i,c-i});
+                break;
+            }
+        }
+        for(int i=1;i<min(r,8-c);i++){
+            if(arr[r-i][c+i]=="#"){
+                mov.push_back({r-i,c+i});
+            }
+            else if(arr[r-i][c+i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r-i,c+i});
+                break;
+            }
+        }
+        return mov;
+    }
+    
+};
+class king{
+private:
+    vector<pair<int,int>>mov;
+    vector<vector<string>>arr;
+public:
+   
+    king(vector<vector<string>>&arr){
+        this->arr=arr;
+    }
+    
+    
+    vector<pair<int,int>> moveset(int r,int c){
+        if(r>0 && arr[r-1][c][0]!=arr[r][c][0])mov.push_back({r-1,c});
+        if(c>0 && arr[r][c-1][0]!=arr[r][c][0])mov.push_back({r,c-1});
+        if(r<7 && arr[r+1][c][0]!=arr[r][c][0])mov.push_back({r+1,c});
+        if(c<7 && arr[r][c+1][0]!=arr[r][c][0])mov.push_back({r,c+1});
+        if(r>0 && c>0 &&  arr[r-1][c-1][0]!=arr[r][c][0])mov.push_back({r-1,c-1});
+        if(r>0 && c<7 && arr[r-1][c+1][0]!=arr[r][c][0])mov.push_back({r-1,c+1});
+        if(r<7 && c>0 && arr[r+1][c-1][0]!=arr[r][c][0])mov.push_back({r+1,c-1});
+        if(r<7 && c<7 && arr[r+1][c+1][0]!=arr[r][c][0])mov.push_back({r+1,c+1});
+        return mov;
+    }
+};
+class knight{
+private:
+    vector<pair<int,int>>mov;
+    vector<vector<string>>arr;
+public:
+  
+    knight(vector<vector<string>>&arr){
+        this->arr=arr;
+    }
+    vector<pair<int,int>> moveset(int r,int c){
+        return mov;
+    }
+};
+class rook{
+private:
+    vector<pair<int,int>>mov;
+    vector<vector<string>>arr;
+public:
+   
+    rook(vector<vector<string>>&arr){
+        this->arr=arr;
+    }
+   
+    vector<pair<int,int>> moveset(int r,int c){
+        for(int i=r+1;i<8;i++){
+            if(arr[i][c]=="# "){
+                mov.push_back({i,c});
+            }
+            else if(arr[i][c][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({i,c});
+                break;
+            }
+        }
+        for(int i=r-1;i>=0;i--){
+            if(arr[i][c]=="# "){
+                mov.push_back({i,c});
+            }
+            else if(arr[i][c][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({i,c});
+                break;
+            }
+        }
+        for(int i=c+1;i<8;i++){
+            if(arr[r][i]=="# "){
+                mov.push_back({r,i});
+            }
+            else if(arr[r][i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r,i});
+                break;
+            }
+        }
+        for(int i=c-1;i>=0;i--){
+            if(arr[r][i]=="# "){
+                mov.push_back({r,i});
+            }
+            else if(arr[r][i][0]==arr[r][c][0]){
+                break;
+            }
+            else{
+                mov.push_back({r,i});
+                break;
+            }
+        }
+        return mov;
+    }
+    
+};
+class pawn{
+private:
+    vector<pair<int,int>>mov;
+    vector<vector<string>>arr;
+public:
+   
+    pawn(vector<vector<string>>&arr){
+        this->arr=arr;
+    }
+    
+    vector<pair<int,int>> moveset(int r,int c){
+        if(arr[r][c]=="Wp"){
+            if(r==6){
+                if(arr[4][c]=="# ")mov.push_back({4,c});
+                if(arr[5][c]=="# ")mov.push_back({5,c});
+                if(c>0 && arr[5][c-1][0]=='B')mov.push_back({5,c-1});
+                if(c<arr[0].size()-1 && arr[5][c+1][0]=='B')mov.push_back({5,c+1});
+            }
+            else if(r>0){
+                if(arr[r-1][c]=="# ")mov.push_back({r-1,c});
+                if(c>0 && arr[r-1][c-1][0]=='B')mov.push_back({r-1,c-1});
+                if(c<arr[0].size()-1 && arr[r-1][c+1][0]=='B')mov.push_back({r-1,c+1});
+            }
+            
+            
+            
+        }
+        else{
+            if(r==1){
+                if(arr[2][c]=="# ")mov.push_back({2,c});
+                if(arr[3][c]=="# ")mov.push_back({3,c});
+                if(c>0 && arr[2][c-1][0]=='W')mov.push_back({2,c-1});
+                if(c<arr[0].size()-1 && arr[2][c+1][0]=='W')mov.push_back({2,c+1});
+            }
+            else if(r<arr.size()-1){
+                if(arr[r+1][c]=="# ")mov.push_back({r+1,c});
+                if(c>0 && arr[r+1][c-1][0]=='W')mov.push_back({r+1,c-1});
+                if(c<arr[0].size()-1 && arr[r+1][c+1][0]=='W')mov.push_back({r+1,c+1});
+            }
+           
+          }
+        return mov;
+    }
+       
+    
+
+    
+};
 class chess{
   public:
     vector<vector<string>>arr;
@@ -53,367 +374,50 @@ class chess{
         cout<<"-------end-------\n";
 
     }
-    
-    
-
-};
-
-class queen: public chess{
-public:
-    vector<pair<int,int>>mov;
-    queen(vector<vector<string>>arr): chess(arr){
-        
-    }
-    bool moveto(int r,int c,int x,int y){
-        for(int i=r+1;i<8;i++){
-            if(arr[i][c]=="# "){
-                mov.push_back({i,c});
-            }
-            else if(arr[i][c][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({i,c});
-                break;
-            }
-        }
-        for(int i=r-1;i>=0;i--){
-            if(arr[i][c]=="# "){
-                mov.push_back({i,c});
-            }
-            else if(arr[i][c][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({i,c});
-                break;
-            }
-        }
-        for(int i=c+1;i<8;i++){
-            if(arr[r][i]=="# "){
-                mov.push_back({r,i});
-            }
-            else if(arr[r][i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r,i});
-                break;
-            }
-        }
-        for(int i=c-1;i>=0;i--){
-            if(arr[r][i]=="# "){
-                mov.push_back({r,i});
-            }
-            else if(arr[r][i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r,i});
-                break;
-            }
-        }
-        for(int i=1;i<8-max(r,c);i++){
-            if(arr[r+i][c+i]=="#"){
-                mov.push_back({r+i,c+i});
-            }
-            else if(arr[r+i][c+i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r+i,c+i});
-                break;
-            }
-        }
-        for(int i=1;i<min(r,c);i++){
-            if(arr[r-i][c-i]=="#"){
-                mov.push_back({r-i,c-i});
-            }
-            else if(arr[r-i][c-i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r-i,c-i});
-                break;
-            }
-        }
-        for(int i=1;i<min(8-r,c);i++){
-            if(arr[r+i][c-i]=="#"){
-                mov.push_back({r+i,c-i});
-            }
-            else if(arr[r+i][c-i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r+i,c-i});
-                break;
-            }
-        }
-        for(int i=1;i<min(r,8-c);i++){
-            if(arr[r-i][c+i]=="#"){
-                mov.push_back({r-i,c+i});
-            }
-            else if(arr[r-i][c+i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r-i,c+i});
-                break;
-            }
-        }
-        for(int i=0;i<mov.size();i++){
-            if(x==mov[i].first && y==mov[i].second){
-                arr[x][y]=arr[r][c];
-                arr[r][c]="# ";
-                return 1;
-            }
+    bool iscontain(vector<pair<int,int>>&pos,int x,int y){
+        for(int i=0;i<pos.size();i++){
+            if(pos[i].first==x && pos[i].second==y)return 1;
         }
         return 0;
     }
-    vector<pair<int,int>> moveset(){
-        return mov;
-    }
-    
-};
-class bishop: public chess{
-public:
-    vector<pair<int,int>>mov;
-    bishop(vector<vector<string>>arr): chess(arr){
-        
-    }
-    bool moveto(int r,int c,int x,int y){
-       
-        for(int i=1;i<8-max(r,c);i++){
-            if(arr[r+i][c+i]=="#"){
-                mov.push_back({r+i,c+i});
-            }
-            else if(arr[r+i][c+i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r+i,c+i});
-                break;
-            }
-        }
-        for(int i=1;i<min(r,c);i++){
-            if(arr[r-i][c-i]=="#"){
-                mov.push_back({r-i,c-i});
-            }
-            else if(arr[r-i][c-i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r-i,c-i});
-                break;
-            }
-        }
-        for(int i=1;i<min(8-r,c);i++){
-            if(arr[r+i][c-i]=="#"){
-                mov.push_back({r+i,c-i});
-            }
-            else if(arr[r+i][c-i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r+i,c-i});
-                break;
-            }
-        }
-        for(int i=1;i<min(r,8-c);i++){
-            if(arr[r-i][c+i]=="#"){
-                mov.push_back({r-i,c+i});
-            }
-            else if(arr[r-i][c+i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r-i,c+i});
-                break;
-            }
-        }
-        for(int i=0;i<mov.size();i++){
-            if(x==mov[i].first && y==mov[i].second){
-                arr[x][y]=arr[r][c];
-                arr[r][c]="# ";
-                return 1;
-            }
-        }
-        return 0;
-    }
-    vector<pair<int,int>> moveset(){
-        return mov;
-    }
-    
-};
-class king: public chess{
-public:
-    vector<pair<int,int>>mov;
-    king(vector<vector<string>>arr): chess(arr){
-        
-    }
-    int moveto(int r,int c,int x,int y){
-        if(r>0 && arr[r-1][c][0]!=arr[r][c][0])mov.push_back({r-1,c});
-        if(c>0 && arr[r][c-1][0]!=arr[r][c][0])mov.push_back({r,c-1});
-        if(r<7 && arr[r+1][c][0]!=arr[r][c][0])mov.push_back({r+1,c});
-        if(c<7 && arr[r][c+1][0]!=arr[r][c][0])mov.push_back({r,c+1});
-        if(r>0 && c>0 &&  arr[r-1][c-1][0]!=arr[r][c][0])mov.push_back({r-1,c-1});
-        if(r>0 && c<7 && arr[r-1][c+1][0]!=arr[r][c][0])mov.push_back({r-1,c+1});
-        if(r<7 && c>0 && arr[r+1][c-1][0]!=arr[r][c][0])mov.push_back({r+1,c-1});
-        if(r<7 && c<7 && arr[r+1][c+1][0]!=arr[r][c][0])mov.push_back({r+1,c+1});
-        if(mov.size()==0){
-            cout<<"cant move";
-            return -1;
-        }
-        for(int i=0;i<mov.size();i++){
-            if(mov[i].first==x && mov[i].second==y){
-                arr[x][y]=arr[r][c];
-                arr[r][c]="#";
-                return 1;
-            }
-        }
-        return 0;
-        
-    }
-    vector<pair<int,int>> moveset(){
-        return mov;
-    }
-};
-class knight: public chess{
-    vector<pair<int,int>>mov;
-    knight(vector<vector<string>>arr): chess(arr){
-        
-    }
-    bool moveto(int r,int c,int x,int y){
-        return 0;
-    }
-    vector<pair<int,int>> moveset(){
-        return mov;
-    }
-};
-class rook: public chess{
-public:
-    vector<pair<int,int>>mov;
-    rook(vector<vector<string>>arr): chess(arr){
-        
-    }
-    bool moveto(int r,int c,int x,int y){
-        for(int i=r+1;i<8;i++){
-            if(arr[i][c]=="# "){
-                mov.push_back({i,c});
-            }
-            else if(arr[i][c][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({i,c});
-                break;
-            }
-        }
-        for(int i=r-1;i>=0;i--){
-            if(arr[i][c]=="# "){
-                mov.push_back({i,c});
-            }
-            else if(arr[i][c][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({i,c});
-                break;
-            }
-        }
-        for(int i=c+1;i<8;i++){
-            if(arr[r][i]=="# "){
-                mov.push_back({r,i});
-            }
-            else if(arr[r][i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r,i});
-                break;
-            }
-        }
-        for(int i=c-1;i>=0;i--){
-            if(arr[r][i]=="# "){
-                mov.push_back({r,i});
-            }
-            else if(arr[r][i][0]==arr[r][c][0]){
-                break;
-            }
-            else{
-                mov.push_back({r,i});
-                break;
-            }
-        }
-        for(int i=0;i<mov.size();i++){
-            if(x==mov[i].first && y==mov[i].second){
-                arr[x][y]=arr[r][c];
-                arr[r][c]="# ";
-                return 1;
-            }
-        }
-        return 0;
-    }
-    vector<pair<int,int>> moveset(){
-        return mov;
-    }
-    
-};
-class pawn:public chess{
-public:
-    vector<pair<int,int>>mov;
-    pawn(vector<vector<string>>arr): chess(arr){
-        
-    }
-    bool moveto(int r,int c,int x,int y){
-        if(arr[r][c]=="Wp"){
-            if(r==6){
-                if(arr[4][c]=="# ")mov.push_back({4,c});
-                if(arr[5][c]=="# ")mov.push_back({5,c});
-                if(c>0 && arr[5][c-1][0]=='B')mov.push_back({5,c-1});
-                if(c<arr[0].size()-1 && arr[5][c+1][0]=='B')mov.push_back({5,c+1});
-            }
-            else if(r>0){
-                if(arr[r-1][c]=="# ")mov.push_back({r-1,c});
-                if(c>0 && arr[r-1][c-1][0]=='B')mov.push_back({r-1,c-1});
-                if(c<arr[0].size()-1 && arr[r-1][c+1][0]=='B')mov.push_back({r-1,c+1});
-            }
-            
-            
-            
-        }
-        else{
-            if(r==1){
-                if(arr[2][c]=="# ")mov.push_back({2,c});
-                if(arr[3][c]=="# ")mov.push_back({3,c});
-                if(c>0 && arr[2][c-1][0]=='W')mov.push_back({2,c-1});
-                if(c<arr[0].size()-1 && arr[2][c+1][0]=='W')mov.push_back({2,c+1});
-            }
-            else if(r<arr.size()-1){
-                if(arr[r+1][c]=="# ")mov.push_back({r+1,c});
-                if(c>0 && arr[r+1][c-1][0]=='W')mov.push_back({r+1,c-1});
-                if(c<arr[0].size()-1 && arr[r+1][c+1][0]=='W')mov.push_back({r+1,c+1});
-            }
+    bool player1(int r,int c,int x,int y){
+        vector<pair<int,int>>pos;
+        if(arr[r][c][1]=='p'){
+            pawn p(arr);
+           pos=p.moveset(r, c);
            
-          }
-        for(int i=0;i<mov.size();i++){
-            if(x==mov[i].first && y==mov[i].second){
-                arr[x][y]=arr[r][c];
-                arr[r][c]="# ";
-                
-                return 1;
-            }
+            
+        }
+       else  if(arr[r][c][1]=='q'){
+           queen q(arr);
+           pos=q.moveset(r, c);
+        }
+       else  if(arr[r][c][1]=='k'){
+           king k(arr);
+           pos=k.moveset(r, c);
+        }
+        else if(arr[r][c][1]=='b'){
+            bishop b(arr);
+            pos=b.moveset(r, c);
+        }
+        else if(arr[r][c][1]=='n'){
+            knight n(arr);
+            pos=n.moveset(r, c);
+        }
+        else if(arr[r][c][1]=='r'){
+            rook r1(arr);
+            pos=r1.moveset(r, c);
+        }
+        if(iscontain(pos, x, y)){
+            arr[x][y]=arr[r][c];
+            arr[r][c]="#";
         }
         return 0;
     }
-    vector<pair<int,int>> moveset(){
-        return mov;
-    }
-       
-    
-
     
 };
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...
         
