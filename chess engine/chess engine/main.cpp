@@ -216,6 +216,39 @@ public:
         this->arr=arr;
     }
     vector<pair<int,int>> moveset(int r,int c){
+        //r-2,c+1
+        //r-2,c-1
+        //r+2,c-1
+        //r+2,c+1
+        //r-1,c+2
+        //r-1,c-2
+        //r+1,c+2
+        //r+1,c-2
+        
+        if(r-2>=0 && c+1<=7){
+            mov.push_back({r-2,c+1});
+        }
+        if(r-2>=0 && c-1>=0){
+            mov.push_back({r-2,c-1});
+        }
+        if(r+2<=7 && c+1<=7){
+            mov.push_back({r+2,c+1});
+        }
+        if(r-1>=0 && c-2>=0){
+            mov.push_back({r-1,c-2});
+        }
+        if(r-1>=0 && c+2<=7){
+            mov.push_back({r-1,c+2});
+        }
+        if(r+1<=7 && c+2<=7){
+            mov.push_back({r+1,c+2});
+        }
+        if(r+1<=7 && c-2>=0){
+            mov.push_back({r+1,c-2});
+        }
+        if(r+2<=7 && c-1>=0){
+            mov.push_back({r+2,c-1});
+        }
         return mov;
     }
 };
@@ -335,9 +368,11 @@ private:
     map<pair<int,int>,int>white;
     map<pair<int,int>,int>black;
     vector<vector<string>>arr;
+    int bkx=0,bky=4,wkx=7,wky=4;
   public:
     chess(vector<vector<string>>&arr){
         this->arr=arr;
+        
     }
     void threats(int r,int c){
         if(arr[r][c]=="#")return;
@@ -523,7 +558,7 @@ private:
     }
     
   
-    bool playermove(int r,int c,int x,int y){
+    int playermove(int r,int c,int x,int y){
         vector<pair<int,int>>pos;
         if(arr[r][c][1]=='p'){
             pawn p(arr);
@@ -538,6 +573,7 @@ private:
        else  if(arr[r][c][1]=='k'){
            king k(arr);
            pos=k.moveset(r, c);
+           
          
        
         }
@@ -557,11 +593,37 @@ private:
         }
         
         if(iscontain(pos, x, y)){
+            if(arr[r][c][1]=='k'){
+                int count=0;
+               
+                if(arr[r][c][0]=='W'){
+                    for(int i=0;i<pos.size();i++){
+                        if(white.find({pos[i].first,pos[i].second})!=white.end())count++;
+                    }
+                    if(count==pos.size() && white.find({r,c})!=white.end())return 2;//checkmate
+                    if(count==pos.size())return -1;//stalemate
+                    if(white.find({x,y})!=white.end())return 0;//Invalid move
+                    wkx=x;
+                    wky=y;
+                }
+                else{
+                    for(int i=0;i<pos.size();i++){
+                        if(black.find({pos[i].first,pos[i].second})!=black.end())count++;
+                    }
+                    if(count==pos.size() && black.find({r,c})!=black.end())return 2;//checkmate
+                    if(count==pos.size())return -1;//stalemate
+                    if(black.find({x,y})!=black.end())return 0;//Invalid move
+                    bkx=x;
+                    bky=y;
+                }
+            }
             remove(r,c);
             arr[x][y]=arr[r][c];
             arr[r][c]="#";
             threats(x,y);
-            
+            if(arr[x][y][0]=='W' && white.find({bkx,bky})!=white.end())return -2;//check
+            if(arr[x][y][0]=='B' && black.find({wkx,wky})!=black.end())return -2;//check
+            return 1;// move successfull;
          
         }
         return 0;
@@ -582,3 +644,4 @@ int main(int argc, const char * argv[]) {
     
    
 }
+
