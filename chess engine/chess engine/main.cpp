@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include<vector>
+#include<map>
 using namespace std;
 class queen{
 private:
@@ -330,10 +331,106 @@ public:
     
 };
 class chess{
-  public:
+private:
+    map<pair<int,int>,int>white;
+    map<pair<int,int>,int>black;
     vector<vector<string>>arr;
+  public:
     chess(vector<vector<string>>&arr){
         this->arr=arr;
+    }
+    void threats(int r,int c){
+        if(arr[r][c]=="#")return;
+        vector<pair<int,int>>pos;
+            if(arr[r][c][1]=='p'){
+                pawn p(arr);
+               pos=p.moveset(r, c);
+               
+                
+            }
+           else  if(arr[r][c][1]=='q'){
+               queen q(arr);
+               pos=q.moveset(r, c);
+            }
+           else  if(arr[r][c][1]=='k'){
+               king k(arr);
+               pos=k.moveset(r, c);
+             
+           
+            }
+            else if(arr[r][c][1]=='b'){
+                bishop b(arr);
+                pos=b.moveset(r, c);
+            }
+            else if(arr[r][c][1]=='n'){
+                knight n(arr);
+                pos=n.moveset(r, c);
+               
+                
+            }
+            else if(arr[r][c][1]=='r'){
+                rook r1(arr);
+                pos=r1.moveset(r, c);
+            }
+        if(arr[r][c][0]=='W'){
+            for(int i=0;i<pos.size();i++){
+                white[{pos[i].first,pos[i].second}]++;
+            }
+        }
+        else{
+            for(int i=0;i<pos.size();i++){
+                black[{pos[i].first,pos[i].second}]++;
+            }
+        }
+
+    }
+    void remove(int r,int c){
+       
+        if(arr[r][c]=="#")return;
+                vector<pair<int,int>>pos;
+                    if(arr[r][c][1]=='p'){
+                        pawn p(arr);
+                       pos=p.moveset(r, c);
+                       
+                        
+                    }
+                   else  if(arr[r][c][1]=='q'){
+                       queen q(arr);
+                       pos=q.moveset(r, c);
+                    }
+                   else  if(arr[r][c][1]=='k'){
+                       king k(arr);
+                       pos=k.moveset(r, c);
+                     
+                   
+                    }
+                    else if(arr[r][c][1]=='b'){
+                        bishop b(arr);
+                        pos=b.moveset(r, c);
+                    }
+                    else if(arr[r][c][1]=='n'){
+                        knight n(arr);
+                        pos=n.moveset(r, c);
+                       
+                        
+                    }
+                    else if(arr[r][c][1]=='r'){
+                        rook r1(arr);
+                        pos=r1.moveset(r, c);
+                    }
+                if(arr[r][c][0]=='W'){
+                    for(int i=0;i<pos.size();i++){
+                        if(white.find({pos[i].first,pos[i].second})!=white.end())white[{pos[i].first,pos[i].second}]--;
+                        if(white[{pos[i].first,pos[i].second}]==0)white.erase({pos[i].first,pos[i].second});
+                    }
+                }
+                else{
+                    for(int i=0;i<pos.size();i++){
+                        if(black.find({pos[i].first,pos[i].second})!=black.end())black[{pos[i].first,pos[i].second}]--;
+                        if(black[{pos[i].first,pos[i].second}]==0)black.erase({pos[i].first,pos[i].second});
+                    }
+             
+        }
     }
     void buildblock(){
         for(int j=0;j<8;j++){
@@ -358,10 +455,54 @@ class chess{
         arr[7][5]="Wb";
         arr[7][3]="Wq";
         arr[7][4]="Wk";
+        for(int r=0;r<8;r++){
+            for(int c=0;c<8;c++){
+                if(arr[r][c]=="#")continue;
+                vector<pair<int,int>>pos;
+                    if(arr[r][c][1]=='p'){
+                        pawn p(arr);
+                       pos=p.moveset(r, c);
+                       
+                        
+                    }
+                   else  if(arr[r][c][1]=='q'){
+                       queen q(arr);
+                       pos=q.moveset(r, c);
+                    }
+                   else  if(arr[r][c][1]=='k'){
+                       king k(arr);
+                       pos=k.moveset(r, c);
+                     
+                   
+                    }
+                    else if(arr[r][c][1]=='b'){
+                        bishop b(arr);
+                        pos=b.moveset(r, c);
+                    }
+                    else if(arr[r][c][1]=='n'){
+                        knight n(arr);
+                        pos=n.moveset(r, c);
+                       
+                        
+                    }
+                    else if(arr[r][c][1]=='r'){
+                        rook r1(arr);
+                        pos=r1.moveset(r, c);
+                    }
+                if(arr[r][c][0]=='W'){
+                    for(int i=0;i<pos.size();i++){
+                        white[{pos[i].first,pos[i].second}]++;
+                    }
+                }
+                else{
+                    for(int i=0;i<pos.size();i++){
+                        black[{pos[i].first,pos[i].second}]++;
+                    }
+                }
+                
+            }
+        }
         
-    }
-    vector<vector<string>> board(){
-        return arr;
     }
     
     void display(){
@@ -380,7 +521,9 @@ class chess{
         }
         return 0;
     }
-    bool player1(int r,int c,int x,int y){
+    
+  
+    bool playermove(int r,int c,int x,int y){
         vector<pair<int,int>>pos;
         if(arr[r][c][1]=='p'){
             pawn p(arr);
@@ -395,6 +538,8 @@ class chess{
        else  if(arr[r][c][1]=='k'){
            king k(arr);
            pos=k.moveset(r, c);
+         
+       
         }
         else if(arr[r][c][1]=='b'){
             bishop b(arr);
@@ -403,14 +548,21 @@ class chess{
         else if(arr[r][c][1]=='n'){
             knight n(arr);
             pos=n.moveset(r, c);
+           
+            
         }
         else if(arr[r][c][1]=='r'){
             rook r1(arr);
             pos=r1.moveset(r, c);
         }
+        
         if(iscontain(pos, x, y)){
+            remove(r,c);
             arr[x][y]=arr[r][c];
             arr[r][c]="#";
+            threats(x,y);
+            
+         
         }
         return 0;
     }
@@ -426,6 +578,7 @@ int main(int argc, const char * argv[]) {
     chess game(arr);
     game.buildblock();
     game.display();
+  
     
    
 }
