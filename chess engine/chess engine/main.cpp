@@ -374,122 +374,7 @@ private:
         this->arr=arr;
         
     }
-    void threats(int r,int c){
-        if(arr[r][c]=="#")return;
-        vector<pair<int,int>>pos;
-            if(arr[r][c][1]=='p'){
-                pawn p(arr);
-               pos=p.moveset(r, c);
-               
-                
-            }
-           else  if(arr[r][c][1]=='q'){
-               queen q(arr);
-               pos=q.moveset(r, c);
-            }
-           else  if(arr[r][c][1]=='k'){
-               king k(arr);
-               pos=k.moveset(r, c);
-             
-           
-            }
-            else if(arr[r][c][1]=='b'){
-                bishop b(arr);
-                pos=b.moveset(r, c);
-            }
-            else if(arr[r][c][1]=='n'){
-                knight n(arr);
-                pos=n.moveset(r, c);
-               
-                
-            }
-            else if(arr[r][c][1]=='r'){
-                rook r1(arr);
-                pos=r1.moveset(r, c);
-            }
-        if(arr[r][c][0]=='W'){
-            for(int i=0;i<pos.size();i++){
-                white[{pos[i].first,pos[i].second}]++;
-            }
-        }
-        else{
-            for(int i=0;i<pos.size();i++){
-                black[{pos[i].first,pos[i].second}]++;
-            }
-        }
-
-    }
-    void remove(int r,int c){
-       
-        if(arr[r][c]=="#")return;
-                vector<pair<int,int>>pos;
-                    if(arr[r][c][1]=='p'){
-                        pawn p(arr);
-                       pos=p.moveset(r, c);
-                       
-                        
-                    }
-                   else  if(arr[r][c][1]=='q'){
-                       queen q(arr);
-                       pos=q.moveset(r, c);
-                    }
-                   else  if(arr[r][c][1]=='k'){
-                       king k(arr);
-                       pos=k.moveset(r, c);
-                     
-                   
-                    }
-                    else if(arr[r][c][1]=='b'){
-                        bishop b(arr);
-                        pos=b.moveset(r, c);
-                    }
-                    else if(arr[r][c][1]=='n'){
-                        knight n(arr);
-                        pos=n.moveset(r, c);
-                       
-                        
-                    }
-                    else if(arr[r][c][1]=='r'){
-                        rook r1(arr);
-                        pos=r1.moveset(r, c);
-                    }
-                if(arr[r][c][0]=='W'){
-                    for(int i=0;i<pos.size();i++){
-                        if(white.find({pos[i].first,pos[i].second})!=white.end())white[{pos[i].first,pos[i].second}]--;
-                        if(white[{pos[i].first,pos[i].second}]==0)white.erase({pos[i].first,pos[i].second});
-                    }
-                }
-                else{
-                    for(int i=0;i<pos.size();i++){
-                        if(black.find({pos[i].first,pos[i].second})!=black.end())black[{pos[i].first,pos[i].second}]--;
-                        if(black[{pos[i].first,pos[i].second}]==0)black.erase({pos[i].first,pos[i].second});
-                    }
-             
-        }
-    }
-    void buildblock(){
-        for(int j=0;j<8;j++){
-            arr[1][j]="Bp";
-        }
-        for(int j=0;j<8;j++){
-            arr[6][j]="Wp";
-        }
-        arr[0][0]="Br";
-        arr[0][7]="Br";
-        arr[0][1]="Bn";
-        arr[0][6]="Bn";
-        arr[0][2]="Bb";
-        arr[0][5]="Bb";
-        arr[0][3]="Bq";
-        arr[0][4]="Bk";
-        arr[7][0]="Wr";
-        arr[7][7]="Wr";
-        arr[7][1]="Wn";
-        arr[7][6]="Wn";
-        arr[7][2]="Wb";
-        arr[7][5]="Wb";
-        arr[7][3]="Wq";
-        arr[7][4]="Wk";
+    void threats(){
         for(int r=0;r<8;r++){
             for(int c=0;c<8;c++){
                 if(arr[r][c]=="#")continue;
@@ -537,6 +422,36 @@ private:
                 
             }
         }
+        
+
+    }
+  
+    void buildblock(){
+        for(int j=0;j<8;j++){
+           // arr[1][j]="Bp";
+        }
+        for(int j=0;j<8;j++){
+            //arr[6][j]="Wp";
+        }
+        arr[1][3]="Bp";
+        arr[1][5]="Bp";
+        arr[0][0]="Br";
+        arr[0][7]="Br";
+        arr[0][1]="Bn";
+        arr[0][6]="Bn";
+        arr[0][2]="Bb";
+        arr[0][5]="Bb";
+        arr[0][3]="Bq";
+        arr[0][4]="Bk";
+        arr[7][0]="Wr";
+        arr[7][7]="Wr";
+        arr[7][1]="Wn";
+        arr[7][6]="Wn";
+        arr[7][2]="Wb";
+        arr[7][5]="Wb";
+        arr[7][3]="Wq";
+        arr[7][4]="Wk";
+        threats();
         
     }
     
@@ -598,29 +513,31 @@ private:
                
                 if(arr[r][c][0]=='W'){
                     for(int i=0;i<pos.size();i++){
-                        if(white.find({pos[i].first,pos[i].second})!=white.end())count++;
-                    }
-                    if(count==pos.size() && white.find({r,c})!=white.end())return 2;//checkmate
-                    if(count==pos.size())return -1;//stalemate
-                    if(white.find({x,y})!=white.end())return 0;//Invalid move
-                    wkx=x;
-                    wky=y;
-                }
-                else{
-                    for(int i=0;i<pos.size();i++){
                         if(black.find({pos[i].first,pos[i].second})!=black.end())count++;
                     }
                     if(count==pos.size() && black.find({r,c})!=black.end())return 2;//checkmate
                     if(count==pos.size())return -1;//stalemate
                     if(black.find({x,y})!=black.end())return 0;//Invalid move
+                    wkx=x;
+                    wky=y;
+                }
+                else{
+                    for(int i=0;i<pos.size();i++){
+                        if(white.find({pos[i].first,pos[i].second})!=white.end())count++;
+                    }
+                   
+                    if(count==pos.size() && white.find({r,c})!=white.end())return 2;//checkmate
+                    if(count==pos.size())return -1;//stalemate
+                    if(white.find({x,y})!=white.end())return 0;//Invalid move
                     bkx=x;
                     bky=y;
                 }
             }
-            remove(r,c);
+            white.clear();
+            black.clear();
             arr[x][y]=arr[r][c];
             arr[r][c]="#";
-            threats(x,y);
+            threats();
             if(arr[x][y][0]=='W' && white.find({bkx,bky})!=white.end())return -2;//check
             if(arr[x][y][0]=='B' && black.find({wkx,wky})!=black.end())return -2;//check
             return 1;// move successfull;
@@ -640,8 +557,6 @@ int main(int argc, const char * argv[]) {
     chess game(arr);
     game.buildblock();
     game.display();
-  
     
-   
 }
 
