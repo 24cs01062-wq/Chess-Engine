@@ -69,7 +69,7 @@ public:
             }
         }
         for(int i=1;i<8-max(r,c);i++){
-            if(arr[r+i][c+i]=="#"){
+            if(arr[r+i][c+i]=="# "){
                 mov.push_back({r+i,c+i});
             }
             else if(arr[r+i][c+i][0]==arr[r][c][0]){
@@ -81,7 +81,7 @@ public:
             }
         }
         for(int i=1;i<min(r,c);i++){
-            if(arr[r-i][c-i]=="#"){
+            if(arr[r-i][c-i]=="# "){
                 mov.push_back({r-i,c-i});
             }
             else if(arr[r-i][c-i][0]==arr[r][c][0]){
@@ -93,7 +93,7 @@ public:
             }
         }
         for(int i=1;i<min(8-r,c);i++){
-            if(arr[r+i][c-i]=="#"){
+            if(arr[r+i][c-i]=="# "){
                 mov.push_back({r+i,c-i});
             }
             else if(arr[r+i][c-i][0]==arr[r][c][0]){
@@ -105,7 +105,7 @@ public:
             }
         }
         for(int i=1;i<min(r,8-c);i++){
-            if(arr[r-i][c+i]=="#"){
+            if(arr[r-i][c+i]=="# "){
                 mov.push_back({r-i,c+i});
             }
             else if(arr[r-i][c+i][0]==arr[r][c][0]){
@@ -132,7 +132,7 @@ public:
   
     vector<pair<int,int>> moveset(int r,int c){
         for(int i=1;i<8-max(r,c);i++){
-            if(arr[r+i][c+i]=="#"){
+            if(arr[r+i][c+i]=="# "){
                 mov.push_back({r+i,c+i});
             }
             else if(arr[r+i][c+i][0]==arr[r][c][0]){
@@ -144,7 +144,7 @@ public:
             }
         }
         for(int i=1;i<min(r,c);i++){
-            if(arr[r-i][c-i]=="#"){
+            if(arr[r-i][c-i]=="# "){
                 mov.push_back({r-i,c-i});
             }
             else if(arr[r-i][c-i][0]==arr[r][c][0]){
@@ -156,7 +156,7 @@ public:
             }
         }
         for(int i=1;i<min(8-r,c);i++){
-            if(arr[r+i][c-i]=="#"){
+            if(arr[r+i][c-i]=="# "){
                 mov.push_back({r+i,c-i});
             }
             else if(arr[r+i][c-i][0]==arr[r][c][0]){
@@ -168,7 +168,7 @@ public:
             }
         }
         for(int i=1;i<min(r,8-c);i++){
-            if(arr[r-i][c+i]=="#"){
+            if(arr[r-i][c+i]=="# "){
                 mov.push_back({r-i,c+i});
             }
             else if(arr[r-i][c+i][0]==arr[r][c][0]){
@@ -368,11 +368,16 @@ private:
     map<pair<int,int>,int>white;
     map<pair<int,int>,int>black;
     vector<vector<string>>arr;
-    int bkx=0,bky=4,wkx=7,wky=4;
+   
   public:
+    int bkx=0,bky=4,wkx=7,wky=4;
     chess(vector<vector<string>>&arr){
         this->arr=arr;
         
+    }
+    bool iswhite(int x,int y){
+        if(arr[x][y][0]=='W')return 1;
+        return 0;
     }
     void threats(){
         for(int r=0;r<8;r++){
@@ -428,13 +433,12 @@ private:
   
     void buildblock(){
         for(int j=0;j<8;j++){
-           // arr[1][j]="Bp";
+            arr[1][j]="Bp";
         }
         for(int j=0;j<8;j++){
-            //arr[6][j]="Wp";
+            arr[6][j]="Wp";
         }
-        arr[1][3]="Bp";
-        arr[1][5]="Bp";
+        
         arr[0][0]="Br";
         arr[0][7]="Br";
         arr[0][1]="Bn";
@@ -462,7 +466,7 @@ private:
             }
             cout<<"\n";
         }
-        cout<<"-------end-------\n";
+        cout<<"------------------------\n";
 
     }
     bool iscontain(vector<pair<int,int>>&pos,int x,int y){
@@ -484,6 +488,7 @@ private:
        else  if(arr[r][c][1]=='q'){
            queen q(arr);
            pos=q.moveset(r, c);
+           
         }
        else  if(arr[r][c][1]=='k'){
            king k(arr);
@@ -536,7 +541,7 @@ private:
             white.clear();
             black.clear();
             arr[x][y]=arr[r][c];
-            arr[r][c]="#";
+            arr[r][c]="# ";
             threats();
             if(arr[x][y][0]=='W' && white.find({bkx,bky})!=white.end())return -2;//check
             if(arr[x][y][0]=='B' && black.find({wkx,wky})!=black.end())return -2;//check
@@ -552,11 +557,154 @@ private:
 int main(int argc, const char * argv[]) {
     // insert code here...
         
-    
+    cout<<"Let The Game Begin!!!!\n";
     vector<vector<string>>arr(8,vector<string>(8,"# "));
     chess game(arr);
     game.buildblock();
+   
     game.display();
+    bool turn =0;
+    int l=0;
+    while(true){
+       
+        if(turn ==0){
+            if(l==-1){
+                cout<<"White king under attack!!\n";
+                int x,y;
+                x=game.wkx;
+                y=game.wky;
+                int r,c;
+                cin>>r>>c;
+                int ans=game.playermove(x, y, r, c);
+                while(ans==0){
+                    cout<<"Invalid Move select a different position"<<"\n";
+                    cin>>r>>c;
+                    ans=game.playermove(x, y, r, c);
+                }
+                if(ans==2){
+                    cout<<" Checkmate!->Black Wins!!!";
+                    l=1;
+                }
+                if(ans==-1){
+                    cout<<"Stalemate!->Draw!!";
+                    l=1;
+                }
+                if(ans==-2){
+                    l=-1;
+                    
+                }
+                if(ans==1)l=0;
+                turn=1;
+            }
+            else{
+                while(true){
+                    cout<<"Player White Move:";
+                    int x,y;
+                    cin>>x>>y;
+                    cout<<"\n";
+                    if(game.iswhite(x, y)){
+                        cout<<"Touch piece!! Select a destination place"<<"\n";
+                        int r,c;
+                        cin>>r>>c;
+                        int ans=game.playermove(x, y, r, c);
+                        while(ans==0){
+                            cout<<"Invalid Move select a different position"<<"\n";
+                            cin>>r>>c;
+                            ans=game.playermove(x, y, r, c);
+                        }
+                       
+                        if(ans==2){
+                            cout<<" Checkmate!->Black Wins!!!";
+                            l=1;
+                        }
+                        if(ans==-1){
+                            cout<<"Stalemate!->Draw!!";
+                            l=1;
+                        }
+                        if(ans==-2){
+                            l=-1;
+                            
+                        }
+                       
+                        turn=1;
+                        break;
+                    }
+                    else cout<<"Choose a white piece!!!"<<"\n";
+                    
+                }
+            }
+        }
+        else{
+           
+            if(l==-1){
+                cout<<"Black king under attack!!\n";
+                int x,y;
+                x=game.bkx;
+                y=game.bky;
+                int r,c;
+                cin>>r>>c;
+                int ans=game.playermove(x, y, r, c);
+                while(ans==0){
+                    cout<<"Invalid Move select a different position"<<"\n";
+                    cin>>r>>c;
+                    ans=game.playermove(x, y, r, c);
+                }
+                if(ans==2){
+                    cout<<" Checkmate!->White Wins!!!";
+                    l=1;
+                }
+                if(ans==-1){
+                    cout<<"Stalemate!->Draw!!";
+                    l=1;
+                }
+                if(ans==-2){
+                    l=-1;
+                    
+                }
+                if(ans==1){
+                    l=0;
+                }
+                turn=0;
+            }
+            else{
+                while(true){
+                    cout<<"Player Black Move:";
+                    int x,y;
+                    cin>>x>>y;
+                    cout<<"\n";
+                    if(game.iswhite(x, y)==0){
+                        cout<<"Touch piece!! Select Destination!!"<<"\n";
+                        int r,c;
+                        cin>>r>>c;
+                        int ans=game.playermove(x, y, r, c);
+                        while(ans==0){
+                            cout<<"Invalid Move select a different position"<<"\n";
+                            cin>>r>>c;
+                            ans=game.playermove(x, y, r, c);
+                        }
+                        if(ans==2){
+                            cout<<" Checkmate!->White Wins!!!";
+                            l=1;
+                        }
+                        if(ans==-1){
+                            cout<<"Stalemate!->Draw!!";
+                            l=1;
+                        }
+                        if(ans==-2){
+                            l=-1;
+                            
+                        }
+                        turn=0;
+                        break;
+                    }
+                    else cout<<"Choose a Black piece!!!"<<"\n";
+                    
+                }
+            }
+        }
+        if(l==1)break;
+        game.display();
+       
+    }
     
 }
-
