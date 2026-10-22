@@ -14,11 +14,9 @@ private:
     vector<pair<int,int>>mov;
     vector<vector<string>>arr;
 public:
-
     queen(vector<vector<string>>&arr){
         this->arr=arr;
     }
-
     vector<pair<int,int>> moveset(int r,int c){
         for(int i=r+1;i<8;i++){
             if(arr[i][c]=="# "){
@@ -125,7 +123,6 @@ private:
     vector<pair<int,int>>mov;
     vector<vector<string>>arr;
 public:
-    
     bishop(vector<vector<string>>&arr){
         this->arr=arr;
     }
@@ -188,7 +185,6 @@ private:
     vector<pair<int,int>>mov;
     vector<vector<string>>arr;
 public:
-   
     king(vector<vector<string>>&arr){
         this->arr=arr;
     }
@@ -211,20 +207,10 @@ private:
     vector<pair<int,int>>mov;
     vector<vector<string>>arr;
 public:
-  
     knight(vector<vector<string>>&arr){
         this->arr=arr;
     }
     vector<pair<int,int>> moveset(int r,int c){
-        //r-2,c+1
-        //r-2,c-1
-        //r+2,c-1
-        //r+2,c+1
-        //r-1,c+2
-        //r-1,c-2
-        //r+1,c+2
-        //r+1,c-2
-        
         if(r-2>=0 && c+1<=7){
             mov.push_back({r-2,c+1});
         }
@@ -257,7 +243,6 @@ private:
     vector<pair<int,int>>mov;
     vector<vector<string>>arr;
 public:
-   
     rook(vector<vector<string>>&arr){
         this->arr=arr;
     }
@@ -313,14 +298,12 @@ public:
         }
         return mov;
     }
-    
 };
 class pawn{
 private:
     vector<pair<int,int>>mov;
     vector<vector<string>>arr;
 public:
-   
     pawn(vector<vector<string>>&arr){
         this->arr=arr;
     }
@@ -358,18 +341,14 @@ public:
           }
         return mov;
     }
-       
-    
-
-    
 };
 class chess{
 private:
     map<pair<int,int>,int>white;
     map<pair<int,int>,int>black;
     vector<vector<string>>arr;
-   
   public:
+    int moves=0;
     int bkx=0,bky=4,wkx=7,wky=4;
     chess(vector<vector<string>>&arr){
         this->arr=arr;
@@ -384,36 +363,36 @@ private:
             for(int c=0;c<8;c++){
                 if(arr[r][c]=="#")continue;
                 vector<pair<int,int>>pos;
-                    if(arr[r][c][1]=='p'){
-                        pawn p(arr);
-                       pos=p.moveset(r, c);
-                       
-                        
-                    }
-                   else  if(arr[r][c][1]=='q'){
-                       queen q(arr);
-                       pos=q.moveset(r, c);
-                    }
-                   else  if(arr[r][c][1]=='k'){
-                       king k(arr);
-                       pos=k.moveset(r, c);
-                     
-                   
-                    }
-                    else if(arr[r][c][1]=='b'){
-                        bishop b(arr);
-                        pos=b.moveset(r, c);
-                    }
-                    else if(arr[r][c][1]=='n'){
-                        knight n(arr);
-                        pos=n.moveset(r, c);
-                       
-                        
-                    }
-                    else if(arr[r][c][1]=='r'){
-                        rook r1(arr);
-                        pos=r1.moveset(r, c);
-                    }
+                if(arr[r][c][1]=='p'){
+                    pawn p(arr);
+                    pos=p.moveset(r, c);
+                    
+                    
+                }
+                else  if(arr[r][c][1]=='q'){
+                    queen q(arr);
+                    pos=q.moveset(r, c);
+                }
+                else  if(arr[r][c][1]=='k'){
+                    king k(arr);
+                    pos=k.moveset(r, c);
+                    
+                    
+                }
+                else if(arr[r][c][1]=='b'){
+                    bishop b(arr);
+                    pos=b.moveset(r, c);
+                }
+                else if(arr[r][c][1]=='n'){
+                    knight n(arr);
+                    pos=n.moveset(r, c);
+                    
+                    
+                }
+                else if(arr[r][c][1]=='r'){
+                    rook r1(arr);
+                    pos=r1.moveset(r, c);
+                }
                 if(arr[r][c][0]=='W'){
                     for(int i=0;i<pos.size();i++){
                         white[{pos[i].first,pos[i].second}]++;
@@ -427,10 +406,8 @@ private:
                 
             }
         }
-        
-
     }
-  
+    
     void buildblock(){
         for(int j=0;j<8;j++){
             arr[1][j]="Bp";
@@ -609,6 +586,8 @@ private:
             }
             white.clear();
             black.clear();
+            if(arr[x][y]!="#" || arr[x][y][1]=='p')moves=0;
+            moves++;
             arr[x][y]=arr[r][c];
             arr[r][c]="# ";
             threats();
@@ -636,7 +615,10 @@ int main(int argc, const char * argv[]) {
     bool turn =0;
     int l=0;
     while(true){
-       
+        if(game.moves==50){
+            cout<<"Draw by 50 moves rule!!!\n";
+            break;
+        }
         if(turn ==0){
             if(l==-1){
                 cout<<"White king under attack!!\n";
@@ -645,6 +627,10 @@ int main(int argc, const char * argv[]) {
                 y=game.wky;
                 int r,c;
                 cin>>r>>c;
+                if(r==-1 && c==-1){
+                    cout<<"White resigned!! Black wins!!!\n";
+                    return 0;
+                }
                 if(game.argum(x,y).size()==0){
                     cout<<"Stalemate!!!\n";
                     continue;
@@ -676,6 +662,10 @@ int main(int argc, const char * argv[]) {
                     cout<<"Player White Move:";
                     int x,y;
                     cin>>x>>y;
+                    if(x==-1 && y==-1){
+                        cout<<"White resigned!! Black wins!!!\n";
+                        return 0;
+                    }
                     cout<<"\n";
                     if(game.argum(x,y).size()==0){
                         cout<<"No Possible moves\n";
@@ -685,6 +675,7 @@ int main(int argc, const char * argv[]) {
                         cout<<"Touch piece!! Select a destination place"<<"\n";
                         int r,c;
                         cin>>r>>c;
+                       
                         int ans=game.playermove(x, y, r, c);
                        
                         while(ans==0){
@@ -723,6 +714,10 @@ int main(int argc, const char * argv[]) {
                 y=game.bky;
                 int r,c;
                 cin>>r>>c;
+                if(r==-1 && c==-1){
+                    cout<<"White resigned!! Black wins!!!\n";
+                    return 0;
+                }
                 if(game.argum(x,y).size()==0){
                     cout<<"Stalemate!!!\n";
                     continue;
@@ -755,6 +750,10 @@ int main(int argc, const char * argv[]) {
                     cout<<"Player Black Move:";
                     int x,y;
                     cin>>x>>y;
+                    if(x==-1 && y==-1){
+                        cout<<"White resigned!! Black wins!!!\n";
+                        return 0;
+                    }
                     cout<<"\n";
                     if(game.argum(x,y).size()==0){
                         cout<<"No Possible moves\n";
@@ -764,6 +763,7 @@ int main(int argc, const char * argv[]) {
                         cout<<"Touch piece!! Select Destination!!"<<"\n";
                         int r,c;
                         cin>>r>>c;
+                       
                         int ans=game.playermove(x, y, r, c);
                         while(ans==0){
                             cout<<"Invalid Move select a different position"<<"\n";
@@ -780,19 +780,15 @@ int main(int argc, const char * argv[]) {
                         }
                         if(ans==-2){
                             l=-1;
-                            
                         }
                         turn=0;
                         break;
                     }
                     else cout<<"Choose a Black piece!!!"<<"\n";
-                    
                 }
             }
         }
         if(l==1)break;
         game.display();
-       
     }
-    
 }
