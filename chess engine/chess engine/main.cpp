@@ -513,6 +513,40 @@ private:
         }
         
         if(iscontain(pos, x, y)){
+            if(arr[r][c][1]=='p'){
+                if(x==0 || x==7){
+                    cout<<"Pawn going to promote!!!\n";
+                    cout<<"Choose piece(Q,N,B,R)\n";
+                    char ch;
+                    cin>>ch;
+                    if(ch=='Q'){
+                        if(arr[r][c][0]=='W'){
+                            arr[r][c]="Wq";
+                        }
+                        else arr[r][c]="Bq";
+                    }
+                    else if(ch=='N'){
+                        if(arr[r][c][0]=='W'){
+                            arr[r][c]="Wn";
+                        }
+                        else arr[r][c]="Bn";
+                    }
+                    else if(ch=='B'){
+                        if(arr[r][c][0]=='W'){
+                            arr[r][c]="Wb";
+                        }
+                        else arr[r][c]="Bb";
+                    }
+                    else{
+                        if(arr[r][c][0]=='W'){
+                            arr[r][c]="Wr";
+                        }
+                        else arr[r][c]="Br";
+                    }
+                    
+                }
+
+            }
             if(arr[r][c][1]=='k'){
                 int count=0;
                
