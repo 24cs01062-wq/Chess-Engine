@@ -347,6 +347,8 @@ private:
     map<pair<int,int>,int>white;
     map<pair<int,int>,int>black;
     vector<vector<string>>arr;
+    int bpas=-1;
+    int wpas=-1;
   public:
     int moves=0;
     int bkx=0,bky=4,wkx=7,wky=4;
@@ -523,6 +525,26 @@ private:
             rook r1(arr);
             pos=r1.moveset(r, c);
         }
+        if(bpas!=-1){
+            if(arr[r][c][1]=='p' && r==3 && (bpas==c-1 | bpas==c+1) && x==2 && y==bpas){
+                arr[x][y]=arr[r][c];
+                arr[r][c]="# ";
+                arr[x+1][bpas]="# ";
+                bpas=-1;
+                return 1;
+            }
+            else bpas=-1;
+        }
+        if(wpas!=-1){
+            if(arr[r][c][1]=='p' && r==4 && (wpas==c-1 | wpas==c+1) && x==5 && y==wpas){
+                arr[x][y]=arr[r][c];
+                arr[r][c]="# ";
+                arr[x-1][wpas]="# ";
+                wpas=-1;
+                return 1;
+            }
+            else wpas=-1;
+        }
         
         if(iscontain(pos, x, y)){
             if(arr[r][c][1]=='p'){
@@ -586,8 +608,16 @@ private:
             }
             white.clear();
             black.clear();
-            if(arr[x][y]!="#" || arr[x][y][1]=='p')moves=0;
+            if(arr[x][y]!="#" || arr[r][c][1]=='p')moves=0;
             moves++;
+            if(arr[r][c][1]=='p'){
+                if(x==r+2){
+                    bpas=c;
+                }
+                else if(x+2==r){
+                    wpas=c;
+                }
+            }
             arr[x][y]=arr[r][c];
             arr[r][c]="# ";
             threats();
@@ -615,7 +645,7 @@ int main(int argc, const char * argv[]) {
     bool turn =0;
     int l=0;
     while(true){
-        if(game.moves==50){
+        if(game.moves>=100){
             cout<<"Draw by 50 moves rule!!!\n";
             break;
         }
@@ -631,6 +661,21 @@ int main(int argc, const char * argv[]) {
                     cout<<"White resigned!! Black wins!!!\n";
                     return 0;
                 }
+                if(r==-2 && c==-2){
+                    cout<<"White offers Draw!!Do u accept(y/n):";
+                    char st;
+                    cin>>st;
+                    if(st=='y'){
+                        cout<<"Draw!!!\n";
+                        return 0;
+                    }
+                    else {
+                        cout<<"Black refused!!";
+                        cin>>r>>c;
+                    }
+                }
+                
+                cout<<"\n";
                 if(game.argum(x,y).size()==0){
                     cout<<"Stalemate!!!\n";
                     continue;
@@ -638,16 +683,16 @@ int main(int argc, const char * argv[]) {
                 int ans=game.playermove(x, y, r, c);
                
                 while(ans==0){
-                    cout<<"Invalid Move select a different position"<<"\n";
+                    cout<<"Invalid Move select a different position:";
                     cin>>r>>c;
                     ans=game.playermove(x, y, r, c);
                 }
                 if(ans==2){
-                    cout<<" Checkmate!->Black Wins!!!";
+                    cout<<" Checkmate!->Black Wins!!!\n";
                     l=1;
                 }
                 if(ans==-1){
-                    cout<<"Stalemate!->Draw!!";
+                    cout<<"Stalemate!->Draw!!\n";
                     l=1;
                 }
                 if(ans==-2){
@@ -656,6 +701,7 @@ int main(int argc, const char * argv[]) {
                 }
                 if(ans==1)l=0;
                 turn=1;
+               
             }
             else{
                 while(true){
@@ -666,20 +712,35 @@ int main(int argc, const char * argv[]) {
                         cout<<"White resigned!! Black wins!!!\n";
                         return 0;
                     }
-                    cout<<"\n";
+                    if(x==-2 && y==-2){
+                        cout<<"White offers Draw!!Do u accept(y/n):";
+                        char st;
+                        cin>>st;
+                        if(st=='y'){
+                            cout<<"Draw!!!\n";
+                            return 0;
+                        }
+                        else{
+                            
+                            cout<<"Black refused!!\n";
+                            cin>>x>>y;
+                        }
+                    }
+                   
+                  
                     if(game.argum(x,y).size()==0){
                         cout<<"No Possible moves\n";
                         continue;
                     }
                     if(game.iswhite(x, y)){
-                        cout<<"Touch piece!! Select a destination place"<<"\n";
+                        cout<<"Touch piece!! Select a destination place:";
                         int r,c;
                         cin>>r>>c;
                        
                         int ans=game.playermove(x, y, r, c);
                        
                         while(ans==0){
-                            cout<<"Invalid Move select a different position"<<"\n";
+                            cout<<"Invalid Move select a different position:";
                             cin>>r>>c;
                             ans=game.playermove(x, y, r, c);
                         }
@@ -718,13 +779,28 @@ int main(int argc, const char * argv[]) {
                     cout<<"White resigned!! Black wins!!!\n";
                     return 0;
                 }
+                if(r==-2 && c==-2){
+                    cout<<"Black offers Draw!!Do u accept(y/n):";
+                    char st;
+                    cin>>st;
+                    if(st=='y'){
+                        cout<<"Draw!!!\n";
+                        return 0;
+                    }
+                    else {
+                        cout<<"White refused!!\n";
+                        cin>>r>>c;
+                    }
+                }
+              
+                
                 if(game.argum(x,y).size()==0){
                     cout<<"Stalemate!!!\n";
                     continue;
                 }
                 int ans=game.playermove(x, y, r, c);
                 while(ans==0){
-                    cout<<"Invalid Move select a different position"<<"\n";
+                    cout<<"Invalid Move select a different position:";
                     cin>>r>>c;
                     ans=game.playermove(x, y, r, c);
                 }
@@ -744,6 +820,7 @@ int main(int argc, const char * argv[]) {
                     l=0;
                 }
                 turn=0;
+                
             }
             else{
                 while(true){
@@ -754,35 +831,50 @@ int main(int argc, const char * argv[]) {
                         cout<<"White resigned!! Black wins!!!\n";
                         return 0;
                     }
-                    cout<<"\n";
+                    if(x==-2 && y==-2){
+                        cout<<"Black offers Draw!!Do u accept(y/n):";
+                        char st;
+                        cin>>st;
+                        if(st=='y'){
+                            cout<<"Draw!!!\n";
+                            return 0;
+                        }
+                        else {
+                            cout<<"White refused!!\n";
+                            cin>>x>>y;
+                        }
+                    }
+                    
                     if(game.argum(x,y).size()==0){
                         cout<<"No Possible moves\n";
                         continue;
                     }
                     if(game.iswhite(x, y)==0){
-                        cout<<"Touch piece!! Select Destination!!"<<"\n";
+                        cout<<"Touch piece!! Select Destination!!";
                         int r,c;
                         cin>>r>>c;
                        
                         int ans=game.playermove(x, y, r, c);
                         while(ans==0){
-                            cout<<"Invalid Move select a different position"<<"\n";
+                            cout<<"Invalid Move select a different position:";
                             cin>>r>>c;
                             ans=game.playermove(x, y, r, c);
                         }
                         if(ans==2){
-                            cout<<" Checkmate!->White Wins!!!";
+                            cout<<" Checkmate!->White Wins!!!\n";
                             l=1;
                         }
                         if(ans==-1){
-                            cout<<"Stalemate!->Draw!!";
+                            cout<<"Stalemate!->Draw!!\n";
                             l=1;
                         }
                         if(ans==-2){
                             l=-1;
                         }
                         turn=0;
+
                         break;
+                        
                     }
                     else cout<<"Choose a Black piece!!!"<<"\n";
                 }
