@@ -476,7 +476,42 @@ private:
         return 0;
     }
     
-  
+    vector<pair<int,int>> argum(int r,int c){
+        vector<pair<int,int>>pos;
+        if(arr[r][c][1]=='p'){
+            pawn p(arr);
+           pos=p.moveset(r, c);
+           
+            
+        }
+       else  if(arr[r][c][1]=='q'){
+           queen q(arr);
+           pos=q.moveset(r, c);
+           
+        }
+       else  if(arr[r][c][1]=='k'){
+           king k(arr);
+           pos=k.moveset(r, c);
+           
+         
+       
+        }
+        else if(arr[r][c][1]=='b'){
+            bishop b(arr);
+            pos=b.moveset(r, c);
+        }
+        else if(arr[r][c][1]=='n'){
+            knight n(arr);
+            pos=n.moveset(r, c);
+           
+            
+        }
+        else if(arr[r][c][1]=='r'){
+            rook r1(arr);
+            pos=r1.moveset(r, c);
+        }
+        return pos;
+    }
     int playermove(int r,int c,int x,int y){
         vector<pair<int,int>>pos;
         if(arr[r][c][1]=='p'){
@@ -582,6 +617,7 @@ private:
             return 1;// move successfull;
          
         }
+       
         return 0;
     }
     
@@ -609,7 +645,12 @@ int main(int argc, const char * argv[]) {
                 y=game.wky;
                 int r,c;
                 cin>>r>>c;
+                if(game.argum(x,y).size()==0){
+                    cout<<"Stalemate!!!\n";
+                    continue;
+                }
                 int ans=game.playermove(x, y, r, c);
+               
                 while(ans==0){
                     cout<<"Invalid Move select a different position"<<"\n";
                     cin>>r>>c;
@@ -636,11 +677,16 @@ int main(int argc, const char * argv[]) {
                     int x,y;
                     cin>>x>>y;
                     cout<<"\n";
+                    if(game.argum(x,y).size()==0){
+                        cout<<"No Possible moves\n";
+                        continue;
+                    }
                     if(game.iswhite(x, y)){
                         cout<<"Touch piece!! Select a destination place"<<"\n";
                         int r,c;
                         cin>>r>>c;
                         int ans=game.playermove(x, y, r, c);
+                       
                         while(ans==0){
                             cout<<"Invalid Move select a different position"<<"\n";
                             cin>>r>>c;
@@ -677,6 +723,10 @@ int main(int argc, const char * argv[]) {
                 y=game.bky;
                 int r,c;
                 cin>>r>>c;
+                if(game.argum(x,y).size()==0){
+                    cout<<"Stalemate!!!\n";
+                    continue;
+                }
                 int ans=game.playermove(x, y, r, c);
                 while(ans==0){
                     cout<<"Invalid Move select a different position"<<"\n";
@@ -706,6 +756,10 @@ int main(int argc, const char * argv[]) {
                     int x,y;
                     cin>>x>>y;
                     cout<<"\n";
+                    if(game.argum(x,y).size()==0){
+                        cout<<"No Possible moves\n";
+                        continue;
+                    }
                     if(game.iswhite(x, y)==0){
                         cout<<"Touch piece!! Select Destination!!"<<"\n";
                         int r,c;
