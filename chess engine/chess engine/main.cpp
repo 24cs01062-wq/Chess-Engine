@@ -798,6 +798,7 @@ class chess{
             if(arr[x][y][0]=='B' && black.find({wkx,wky})!=black.end())return -2;//check
             return 1;// move successfull;
         }
+        threats();
         return 0;
     }
 };
