@@ -109,7 +109,81 @@ public:
         }
         return mov;
     }
-    
+    vector<pair<int,int>>attack(int r,int c){
+        for(int i=r+1;i<8;i++){
+            if(arr[i][c]=="# "){
+                mov.push_back({i,c});
+            }
+            else{
+                mov.push_back({i,c});
+                break;
+            }
+        }
+        for(int i=r-1;i>=0;i--){
+            if(arr[i][c]=="# "){
+                mov.push_back({i,c});
+            }
+            else{
+                mov.push_back({i,c});
+                break;
+            }
+        }
+        for(int i=c+1;i<8;i++){
+            if(arr[r][i]=="# "){
+                mov.push_back({r,i});
+            }
+            else{
+                mov.push_back({r,i});
+                break;
+            }
+        }
+        for(int i=c-1;i>=0;i--){
+            if(arr[r][i]=="# "){
+                mov.push_back({r,i});
+            }
+            else{
+                mov.push_back({r,i});
+                break;
+            }
+        }
+        for(int i=1;i<8-max(r,c);i++){
+            if(arr[r+i][c+i]=="# "){
+                mov.push_back({r+i,c+i});
+            }
+            else{
+                mov.push_back({r+i,c+i});
+                break;
+            }
+        }
+        for(int i=1;i<=min(r,c);i++){
+            if(arr[r-i][c-i]=="# "){
+                mov.push_back({r-i,c-i});
+            }
+            else{
+                mov.push_back({r-i,c-i});
+                break;
+            }
+        }
+        for(int i=1;i<min(8-r,c+1);i++){
+            if(arr[r+i][c-i]=="# "){
+                mov.push_back({r+i,c-i});
+            }
+            else{
+                mov.push_back({r+i,c-i});
+                break;
+            }
+        }
+        for(int i=1;i<min(r+1,8-c);i++){
+            if(arr[r-i][c+i]=="# "){
+                mov.push_back({r-i,c+i});
+            }
+            else{
+                mov.push_back({r-i,c+i});
+                break;
+            }
+        }
+        return mov;
+    }
 };
 class bishop{
 private:
@@ -170,6 +244,45 @@ public:
         }
         return mov;
     }
+    vector<pair<int,int>> attack(int r,int c){
+        for(int i=1;i<8-max(r,c);i++){
+            if(arr[r+i][c+i]=="# "){
+                mov.push_back({r+i,c+i});
+            }
+            else{
+                mov.push_back({r+i,c+i});
+                break;
+            }
+        }
+        for(int i=1;i<=min(r,c);i++){
+            if(arr[r-i][c-i]=="# "){
+                mov.push_back({r-i,c-i});
+            }
+            else{
+                mov.push_back({r-i,c-i});
+                break;
+            }
+        }
+        for(int i=1;i<min(8-r,c+1);i++){
+            if(arr[r+i][c-i]=="# "){
+                mov.push_back({r+i,c-i});
+            }
+            else{
+                mov.push_back({r+i,c-i});
+                break;
+            }
+        }
+        for(int i=1;i<min(r+1,8-c);i++){
+            if(arr[r-i][c+i]=="# "){
+                mov.push_back({r-i,c+i});
+            }
+            else{
+                mov.push_back({r-i,c+i});
+                break;
+            }
+        }
+        return mov;
+    }
 };
 class king{
 private:
@@ -188,6 +301,17 @@ public:
         if(r>0 && c<7 && arr[r-1][c+1][0]!=arr[r][c][0])mov.push_back({r-1,c+1});
         if(r<7 && c>0 && arr[r+1][c-1][0]!=arr[r][c][0])mov.push_back({r+1,c-1});
         if(r<7 && c<7 && arr[r+1][c+1][0]!=arr[r][c][0])mov.push_back({r+1,c+1});
+        return mov;
+    }
+     vector<pair<int,int>> attack(int r,int c){
+        if(r>0)mov.push_back({r-1,c});
+        if(c>0)mov.push_back({r,c-1});
+        if(r<7)mov.push_back({r+1,c});
+        if(c<7)mov.push_back({r,c+1});
+        if(r>0 && c>0)mov.push_back({r-1,c-1});
+        if(r>0 && c<7)mov.push_back({r-1,c+1});
+        if(r<7 && c>0)mov.push_back({r+1,c-1});
+        if(r<7 && c<7)mov.push_back({r+1,c+1});
         return mov;
     }
 };
@@ -223,6 +347,33 @@ public:
         }
         if(r+2<=7 && c-1>=0){
            if(arr[r+2][c-1][0]!=arr[r][c][0])mov.push_back({r+2,c-1});
+        }
+        return mov;
+    }
+     vector<pair<int,int>>attack(int r,int c){
+        if(r-2>=0 && c+1<=7){
+          mov.push_back({r-2,c+1});
+        }
+        if(r-2>=0 && c-1>=0){
+          mov.push_back({r-2,c-1});
+        }
+        if(r+2<=7 && c+1<=7){
+           mov.push_back({r+2,c+1});
+        }
+        if(r-1>=0 && c-2>=0){
+            mov.push_back({r-1,c-2});
+        }
+        if(r-1>=0 && c+2<=7){
+           mov.push_back({r-1,c+2});
+        }
+        if(r+1<=7 && c+2<=7){
+           mov.push_back({r+1,c+2});
+        }
+        if(r+1<=7 && c-2>=0){
+           mov.push_back({r+1,c-2});
+        }
+        if(r+2<=7 && c-1>=0){
+           mov.push_back({r+2,c-1});
         }
         return mov;
     }
@@ -286,6 +437,45 @@ public:
         }
         return mov;
     }
+     vector<pair<int,int>> attack(int r,int c){
+        for(int i=r+1;i<8;i++){
+            if(arr[i][c]=="# "){
+                mov.push_back({i,c});
+            }
+            else{
+                mov.push_back({i,c});
+                break;
+            }
+        }
+        for(int i=r-1;i>=0;i--){
+            if(arr[i][c]=="# "){
+                mov.push_back({i,c});
+            }
+            else{
+                mov.push_back({i,c});
+                break;
+            }
+        }
+        for(int i=c+1;i<8;i++){
+            if(arr[r][i]=="# "){
+                mov.push_back({r,i});
+            }
+            else{
+                mov.push_back({r,i});
+                break;
+            }
+        }
+        for(int i=c-1;i>=0;i--){
+            if(arr[r][i]=="# "){
+                mov.push_back({r,i});
+            }
+            else{
+                mov.push_back({r,i});
+                break;
+            }
+        }
+        return mov;
+    }
 };
 class pawn{
 private:
@@ -324,6 +514,29 @@ public:
           }
         return mov;
     }
+      vector<pair<int,int>> attack(int r,int c){
+        if(arr[r][c]=="Wp"){
+            if(r==6){
+                if(c>0)mov.push_back({5,c-1});
+                if(c<arr[0].size()-1)mov.push_back({5,c+1});
+            }
+            else if(r>0){
+                if(c>0)mov.push_back({r-1,c-1});
+                if(c<arr[0].size()-1)mov.push_back({r-1,c+1});
+            }   
+        }
+        else{
+            if(r==1){
+                if(c>0)mov.push_back({2,c-1});
+                if(c<arr[0].size()-1)mov.push_back({2,c+1});
+            }
+            else if(r<arr.size()-1){
+                if(c>0)mov.push_back({r+1,c-1});
+                if(c<arr[0].size()-1)mov.push_back({r+1,c+1});
+            }
+          }
+        return mov;
+    }
 };
 class chess{
   private:
@@ -352,31 +565,31 @@ class chess{
     void threats(){
         for(int r=0;r<8;r++){
             for(int c=0;c<8;c++){
-                if(arr[r][c]=="#")continue;
+                if(arr[r][c]=="# ")continue;
                 vector<pair<int,int>>pos;
                 if(arr[r][c][1]=='p'){
                     pawn p(arr);
-                    pos=p.moveset(r, c);    
+                    pos=p.attack(r, c);    
                 }
                 else  if(arr[r][c][1]=='q'){
                     queen q(arr);
-                    pos=q.moveset(r, c);
+                    pos=q.attack(r, c);
                 }
                 else  if(arr[r][c][1]=='k'){
                     king k(arr);
-                    pos=k.moveset(r, c); 
+                    pos=k.attack(r, c); 
                 }
                 else if(arr[r][c][1]=='b'){
                     bishop b(arr);
-                    pos=b.moveset(r, c);
+                    pos=b.attack(r, c);
                 }
                 else if(arr[r][c][1]=='n'){
                     knight n(arr);
-                    pos=n.moveset(r, c);
+                    pos=n.attack(r, c);
                 }
                 else if(arr[r][c][1]=='r'){
                     rook r1(arr);
-                    pos=r1.moveset(r, c);
+                    pos=r1.attack(r, c);
                 }
                 if(arr[r][c][0]=='W'){
                     for(int i=0;i<pos.size();i++){
@@ -568,7 +781,7 @@ class chess{
             }
             white.clear();
             black.clear();
-            if(arr[x][y]!="#" || arr[r][c][1]=='p')moves=0;
+            if(arr[x][y]!="# " || arr[r][c][1]=='p')moves=0;
             moves++;
             if(arr[r][c][1]=='p'){
                 if(x==r+2){
