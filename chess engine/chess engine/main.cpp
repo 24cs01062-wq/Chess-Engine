@@ -1,10 +1,3 @@
-//
-//  main.cpp
-//  chess engine
-//
-//  Created by Raam Sundaran on 11/10/26.
-//
-
 #include <iostream>
 #include<vector>
 #include<map>
@@ -78,7 +71,7 @@ public:
                 break;
             }
         }
-        for(int i=1;i<min(r,c);i++){
+        for(int i=1;i<=min(r,c);i++){
             if(arr[r-i][c-i]=="# "){
                 mov.push_back({r-i,c-i});
             }
@@ -90,7 +83,7 @@ public:
                 break;
             }
         }
-        for(int i=1;i<min(8-r,c);i++){
+        for(int i=1;i<min(8-r,c+1);i++){
             if(arr[r+i][c-i]=="# "){
                 mov.push_back({r+i,c-i});
             }
@@ -102,7 +95,7 @@ public:
                 break;
             }
         }
-        for(int i=1;i<min(r,8-c);i++){
+        for(int i=1;i<min(r+1,8-c);i++){
             if(arr[r-i][c+i]=="# "){
                 mov.push_back({r-i,c+i});
             }
@@ -126,7 +119,6 @@ public:
     bishop(vector<vector<string>>&arr){
         this->arr=arr;
     }
-  
     vector<pair<int,int>> moveset(int r,int c){
         for(int i=1;i<8-max(r,c);i++){
             if(arr[r+i][c+i]=="# "){
@@ -140,7 +132,7 @@ public:
                 break;
             }
         }
-        for(int i=1;i<min(r,c);i++){
+        for(int i=1;i<=min(r,c);i++){
             if(arr[r-i][c-i]=="# "){
                 mov.push_back({r-i,c-i});
             }
@@ -152,7 +144,7 @@ public:
                 break;
             }
         }
-        for(int i=1;i<min(8-r,c);i++){
+        for(int i=1;i<min(8-r,c+1);i++){
             if(arr[r+i][c-i]=="# "){
                 mov.push_back({r+i,c-i});
             }
@@ -164,7 +156,7 @@ public:
                 break;
             }
         }
-        for(int i=1;i<min(r,8-c);i++){
+        for(int i=1;i<min(r+1,8-c);i++){
             if(arr[r-i][c+i]=="# "){
                 mov.push_back({r-i,c+i});
             }
@@ -178,7 +170,6 @@ public:
         }
         return mov;
     }
-    
 };
 class king{
 private:
@@ -188,8 +179,6 @@ public:
     king(vector<vector<string>>&arr){
         this->arr=arr;
     }
-    
-    
     vector<pair<int,int>> moveset(int r,int c){
         if(r>0 && arr[r-1][c][0]!=arr[r][c][0])mov.push_back({r-1,c});
         if(c>0 && arr[r][c-1][0]!=arr[r][c][0])mov.push_back({r,c-1});
@@ -212,28 +201,28 @@ public:
     }
     vector<pair<int,int>> moveset(int r,int c){
         if(r-2>=0 && c+1<=7){
-            mov.push_back({r-2,c+1});
+            if(arr[r-2][c+1][0]!=arr[r][c][0])mov.push_back({r-2,c+1});
         }
         if(r-2>=0 && c-1>=0){
-            mov.push_back({r-2,c-1});
+            if(arr[r-2][c-1][0]!=arr[r][c][0])mov.push_back({r-2,c-1});
         }
         if(r+2<=7 && c+1<=7){
-            mov.push_back({r+2,c+1});
+            if(arr[r+2][c+1][0]!=arr[r][c][0])mov.push_back({r+2,c+1});
         }
         if(r-1>=0 && c-2>=0){
-            mov.push_back({r-1,c-2});
+            if(arr[r-1][c-2][0]!=arr[r][c][0])mov.push_back({r-1,c-2});
         }
         if(r-1>=0 && c+2<=7){
-            mov.push_back({r-1,c+2});
+            if(arr[r-1][c+2][0]!=arr[r][c][0])mov.push_back({r-1,c+2});
         }
         if(r+1<=7 && c+2<=7){
-            mov.push_back({r+1,c+2});
+            if(arr[r+1][c+2][0]!=arr[r][c][0])mov.push_back({r+1,c+2});
         }
         if(r+1<=7 && c-2>=0){
-            mov.push_back({r+1,c-2});
+           if(arr[r+1][c-2][0]!=arr[r][c][0])mov.push_back({r+1,c-2});
         }
         if(r+2<=7 && c-1>=0){
-            mov.push_back({r+2,c-1});
+           if(arr[r+2][c-1][0]!=arr[r][c][0])mov.push_back({r+2,c-1});
         }
         return mov;
     }
@@ -246,7 +235,6 @@ public:
     rook(vector<vector<string>>&arr){
         this->arr=arr;
     }
-   
     vector<pair<int,int>> moveset(int r,int c){
         for(int i=r+1;i<8;i++){
             if(arr[i][c]=="# "){
@@ -307,11 +295,10 @@ public:
     pawn(vector<vector<string>>&arr){
         this->arr=arr;
     }
-    
     vector<pair<int,int>> moveset(int r,int c){
         if(arr[r][c]=="Wp"){
             if(r==6){
-                if(arr[4][c]=="# ")mov.push_back({4,c});
+                if(arr[4][c]=="# " && arr[5][c]=="# ")mov.push_back({4,c});
                 if(arr[5][c]=="# ")mov.push_back({5,c});
                 if(c>0 && arr[5][c-1][0]=='B')mov.push_back({5,c-1});
                 if(c<arr[0].size()-1 && arr[5][c+1][0]=='B')mov.push_back({5,c+1});
@@ -320,15 +307,12 @@ public:
                 if(arr[r-1][c]=="# ")mov.push_back({r-1,c});
                 if(c>0 && arr[r-1][c-1][0]=='B')mov.push_back({r-1,c-1});
                 if(c<arr[0].size()-1 && arr[r-1][c+1][0]=='B')mov.push_back({r-1,c+1});
-            }
-            
-            
-            
+            }   
         }
         else{
             if(r==1){
                 if(arr[2][c]=="# ")mov.push_back({2,c});
-                if(arr[3][c]=="# ")mov.push_back({3,c});
+                if(arr[3][c]=="# " && arr[2][c]=="# ")mov.push_back({3,c});
                 if(c>0 && arr[2][c-1][0]=='W')mov.push_back({2,c-1});
                 if(c<arr[0].size()-1 && arr[2][c+1][0]=='W')mov.push_back({2,c+1});
             }
@@ -337,24 +321,29 @@ public:
                 if(c>0 && arr[r+1][c-1][0]=='W')mov.push_back({r+1,c-1});
                 if(c<arr[0].size()-1 && arr[r+1][c+1][0]=='W')mov.push_back({r+1,c+1});
             }
-           
           }
         return mov;
     }
 };
 class chess{
-private:
+  private:
     map<pair<int,int>,int>white;
     map<pair<int,int>,int>black;
     vector<vector<string>>arr;
-    int bpas=-1;
-    int wpas=-1;
+    int bpas;
+    int wpas;
   public:
-    int moves=0;
-    int bkx=0,bky=4,wkx=7,wky=4;
+    int moves;
+    int bkx,bky,wkx,wky;
     chess(vector<vector<string>>&arr){
         this->arr=arr;
-        
+        bpas=-1;
+        wpas=-1;
+        moves=0;
+        bkx=0;
+        bky=4;
+        wkx=7;
+        wky=4;
     }
     bool iswhite(int x,int y){
         if(arr[x][y][0]=='W')return 1;
@@ -367,9 +356,7 @@ private:
                 vector<pair<int,int>>pos;
                 if(arr[r][c][1]=='p'){
                     pawn p(arr);
-                    pos=p.moveset(r, c);
-                    
-                    
+                    pos=p.moveset(r, c);    
                 }
                 else  if(arr[r][c][1]=='q'){
                     queen q(arr);
@@ -377,9 +364,7 @@ private:
                 }
                 else  if(arr[r][c][1]=='k'){
                     king k(arr);
-                    pos=k.moveset(r, c);
-                    
-                    
+                    pos=k.moveset(r, c); 
                 }
                 else if(arr[r][c][1]=='b'){
                     bishop b(arr);
@@ -388,8 +373,6 @@ private:
                 else if(arr[r][c][1]=='n'){
                     knight n(arr);
                     pos=n.moveset(r, c);
-                    
-                    
                 }
                 else if(arr[r][c][1]=='r'){
                     rook r1(arr);
@@ -409,7 +392,6 @@ private:
             }
         }
     }
-    
     void buildblock(){
         for(int j=0;j<8;j++){
             arr[1][j]="Bp";
@@ -417,7 +399,6 @@ private:
         for(int j=0;j<8;j++){
             arr[6][j]="Wp";
         }
-        
         arr[0][0]="Br";
         arr[0][7]="Br";
         arr[0][1]="Bn";
@@ -435,9 +416,7 @@ private:
         arr[7][3]="Wq";
         arr[7][4]="Wk";
         threats();
-        
     }
-    
     void display(){
         for(int i=0;i<8;i++){
             for(int j=0;j<8;j++){
@@ -446,7 +425,6 @@ private:
             cout<<"\n";
         }
         cout<<"------------------------\n";
-
     }
     bool iscontain(vector<pair<int,int>>&pos,int x,int y){
         for(int i=0;i<pos.size();i++){
@@ -454,26 +432,19 @@ private:
         }
         return 0;
     }
-    
     vector<pair<int,int>> argum(int r,int c){
         vector<pair<int,int>>pos;
         if(arr[r][c][1]=='p'){
             pawn p(arr);
-           pos=p.moveset(r, c);
-           
-            
+           pos=p.moveset(r, c);  
         }
        else  if(arr[r][c][1]=='q'){
            queen q(arr);
            pos=q.moveset(r, c);
-           
         }
        else  if(arr[r][c][1]=='k'){
            king k(arr);
            pos=k.moveset(r, c);
-           
-         
-       
         }
         else if(arr[r][c][1]=='b'){
             bishop b(arr);
@@ -482,8 +453,6 @@ private:
         else if(arr[r][c][1]=='n'){
             knight n(arr);
             pos=n.moveset(r, c);
-           
-            
         }
         else if(arr[r][c][1]=='r'){
             rook r1(arr);
@@ -496,20 +465,14 @@ private:
         if(arr[r][c][1]=='p'){
             pawn p(arr);
            pos=p.moveset(r, c);
-           
-            
         }
        else  if(arr[r][c][1]=='q'){
            queen q(arr);
            pos=q.moveset(r, c);
-           
         }
        else  if(arr[r][c][1]=='k'){
            king k(arr);
            pos=k.moveset(r, c);
-           
-         
-       
         }
         else if(arr[r][c][1]=='b'){
             bishop b(arr);
@@ -518,8 +481,6 @@ private:
         else if(arr[r][c][1]=='n'){
             knight n(arr);
             pos=n.moveset(r, c);
-           
-            
         }
         else if(arr[r][c][1]=='r'){
             rook r1(arr);
@@ -545,7 +506,6 @@ private:
             }
             else wpas=-1;
         }
-        
         if(iscontain(pos, x, y)){
             if(arr[r][c][1]=='p'){
                 if(x==0 || x==7){
@@ -624,23 +584,16 @@ private:
             if(arr[x][y][0]=='W' && white.find({bkx,bky})!=white.end())return -2;//check
             if(arr[x][y][0]=='B' && black.find({wkx,wky})!=black.end())return -2;//check
             return 1;// move successfull;
-         
         }
-       
         return 0;
     }
-    
 };
-
-
 int main(int argc, const char * argv[]) {
-    // insert code here...
-        
+
     cout<<"Let The Game Begin!!!!\n";
     vector<vector<string>>arr(8,vector<string>(8,"# "));
     chess game(arr);
     game.buildblock();
-   
     game.display();
     bool turn =0;
     int l=0;
@@ -701,7 +654,6 @@ int main(int argc, const char * argv[]) {
                 }
                 if(ans==1)l=0;
                 turn=1;
-               
             }
             else{
                 while(true){
@@ -721,13 +673,10 @@ int main(int argc, const char * argv[]) {
                             return 0;
                         }
                         else{
-                            
                             cout<<"Black refused!!\n";
                             cin>>x>>y;
                         }
                     }
-                   
-                  
                     if(game.argum(x,y).size()==0){
                         cout<<"No Possible moves\n";
                         continue;
@@ -736,15 +685,12 @@ int main(int argc, const char * argv[]) {
                         cout<<"Touch piece!! Select a destination place:";
                         int r,c;
                         cin>>r>>c;
-                       
                         int ans=game.playermove(x, y, r, c);
-                       
                         while(ans==0){
                             cout<<"Invalid Move select a different position:";
                             cin>>r>>c;
                             ans=game.playermove(x, y, r, c);
                         }
-                       
                         if(ans==2){
                             cout<<" Checkmate!->Black Wins!!!";
                             l=1;
@@ -755,19 +701,15 @@ int main(int argc, const char * argv[]) {
                         }
                         if(ans==-2){
                             l=-1;
-                            
                         }
-                       
                         turn=1;
                         break;
                     }
                     else cout<<"Choose a white piece!!!"<<"\n";
-                    
                 }
             }
         }
         else{
-           
             if(l==-1){
                 cout<<"Black king under attack!!\n";
                 int x,y;
@@ -792,8 +734,6 @@ int main(int argc, const char * argv[]) {
                         cin>>r>>c;
                     }
                 }
-              
-                
                 if(game.argum(x,y).size()==0){
                     cout<<"Stalemate!!!\n";
                     continue;
@@ -814,13 +754,11 @@ int main(int argc, const char * argv[]) {
                 }
                 if(ans==-2){
                     l=-1;
-                    
                 }
                 if(ans==1){
                     l=0;
                 }
                 turn=0;
-                
             }
             else{
                 while(true){
@@ -844,7 +782,6 @@ int main(int argc, const char * argv[]) {
                             cin>>x>>y;
                         }
                     }
-                    
                     if(game.argum(x,y).size()==0){
                         cout<<"No Possible moves\n";
                         continue;
@@ -853,7 +790,6 @@ int main(int argc, const char * argv[]) {
                         cout<<"Touch piece!! Select Destination!!";
                         int r,c;
                         cin>>r>>c;
-                       
                         int ans=game.playermove(x, y, r, c);
                         while(ans==0){
                             cout<<"Invalid Move select a different position:";
@@ -872,9 +808,7 @@ int main(int argc, const char * argv[]) {
                             l=-1;
                         }
                         turn=0;
-
                         break;
-                        
                     }
                     else cout<<"Choose a Black piece!!!"<<"\n";
                 }
